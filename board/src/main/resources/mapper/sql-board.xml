@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board.mapper.BoardMapper">
+    <select id="selectBoardList" resultType="board.dto.BoardDto">
+        select board_idx, title, hit_cnt, date_format(created_dt, '%Y.%m.%d %H:%i:%s') as created_dt
+          from t_board
+         where deleted_yn = 'N'
+         order by board_idx desc
+    </select>
+</mapper>
