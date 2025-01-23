@@ -44,6 +44,11 @@ public class DatabaseConfiguration {
         sessionFactoryBean.setMapperLocations(
             applicationContext.getResources("classpath:/mapper/**/sql-*.xml")
         );
+        
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
+        sessionFactoryBean.setConfiguration(configuration);
+        
         return sessionFactoryBean.getObject();
     }
     
@@ -54,9 +59,10 @@ public class DatabaseConfiguration {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
     
-    @Bean
-    @ConfigurationProperties(prefix = "mybatis.configuration")
-    org.apache.ibatis.session.Configuration mybatisConfig() {
-        return new org.apache.ibatis.session.Configuration(); 
-    }
+//    @Bean
+//    @ConfigurationProperties(prefix = "mybatis.configuration")
+//    org.apache.ibatis.session.Configuration mybatisConfig() {
+//        return new org.apache.ibatis.session.Configuration();
+//        
+//    }
 }

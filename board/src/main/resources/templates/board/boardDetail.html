@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}" />
+</head>
+<body>
+    <div class="container">
+        <h2>게시판 상세</h2>
+        <form id="frm" method="post">
+            <input type="hidden" name="boardIdx" th:value="${board.boardIdx}" />
+            
+            <table class="board_detail">
+                <colgroup>
+                    <col width="15%" />
+                    <col width="*" />
+                    <col width="15%" />
+                    <col width="35%" />                    
+                </colgroup>
+                <tr>
+                   <th>글번호</th>
+                   <td th:text="${board.boardIdx}"></td>
+                   <th>조회수</th>
+                   <td th:text="${board.hitCnt}"></td>
+                </tr>
+                <tr>
+                    <th>작성자</th>
+                    <td th:text="${board.createdId}"></td>
+                    <th>작성일</th>
+                    <td th:text="${board.createdDt}"></td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td colspan="3"><input type="text" id="title" name="title" th:value="${board.title}"/></td>
+                </tr>
+                <tr>
+                   <td colspan="4"><textarea id="contents" name="contents" th:text="${board.contents}"></textarea></td>                
+                </tr>
+            </table>
+        </form>
+        
+        <input type="button" id="list" class="btn" value="목록으로" />
+        <input type="button" id="update" class="btn" value="수정하기" />
+        <input type="button" id="delete" class="btn" value="삭제하기" />
+        
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+	        $(function() {
+	        	$("#list").on("click", function() {
+	        		location.href = "openBoardList.do";
+	        	});
+	        	$("#update").on("click", function() {
+                    let frm = $("#frm")[0];
+                    frm.action = "updateBoard.do";
+                    frm.submit();
+                });
+				$("#delete").on("click", function() {
+					let frm = $("#frm")[0];
+                    frm.action = "deleteBoard.do";
+                    frm.submit();
+				});
+	        });
+        </script>
+    </div>
+</body>
+</html>

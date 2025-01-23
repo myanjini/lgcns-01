@@ -3,9 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>게시판</title>
-	<!--
-	<link rel="stylesheet" href="/css/board.css" />
-	-->
 	<link rel="stylesheet" th:href="@{/css/board.css}" />
 </head>
 <body>
@@ -29,7 +26,13 @@
             <tbody>
                 <tr th:if="${#lists.size(list)} > 0" th:each="list : ${list}">
                     <td th:text="${list.boardIdx}"></td>
+                    <!--  
                     <td th:text="${list.title}" class="title"></td>
+                    -->
+                    <td class="title">
+                        <a href="/board/openBoardDetail.do?boardIdx=" 
+                            th:attrappend="href=${list.boardIdx}" th:text="${list.title}"></a>
+                    </td>
                     <td th:text="${list.hitCnt}"></td>
                     <td th:text="${list.createdDt}"></td>
                 </tr>
@@ -38,6 +41,7 @@
                 </tr>
             </tbody>
         </table>
+        <a href="/board/openBoardWrite.do" class="btn">글쓰기</a>
     </div>
 </body>
 </html>
