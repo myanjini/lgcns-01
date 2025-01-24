@@ -12,9 +12,12 @@
     </select>
     
     <!--
-        외부 입력값을 쿼리에 반영할 경우, #{ }을 이용해야 SQL 인젝션 공격을 방어할 수 있음 
+        외부 입력값을 쿼리에 반영할 경우, #{ }을 이용해야 SQL 인젝션 공격을 방어할 수 있음
+        useGeneratedKeys : DBMS가 자동 생성한 키를 사용 
+        keyProperty : 반환하는 키 
      -->
-    <insert id="insertBoard" parameterType="board.dto.BoardDto">
+    <insert id="insertBoard" parameterType="board.dto.BoardDto" 
+        useGeneratedKeys="true" keyProperty="boardIdx">
         insert into t_board(title, contents, created_dt, created_id)
         values (#{title}, #{contents}, now(), #{createdId})
     </insert>
@@ -48,4 +51,25 @@
              , updator_id = #{updatorId}
          where board_idx = #{boardIdx}  
     </delete>
+    
+    <insert id="insertBoardFileList" parameterType="board.dto.BoardFileDto">
+        insert into t_file 
+            (board_idx, original_file_name, stored_file_path, file_size, created_id, created_dt)
+        values 
+        <foreach collection="list" item="item" separator=",">
+            (#{item.boardIdx}, #{item.originalFileName}, #{item.storedFilePath}, #{item.fileSize}, 'admin', now())
+        </foreach>
+    </insert>
+    
+    <select id="selectBoardFileList" parameterType="int" resultType="board.dto.BoardFileDto">
+        select idx, board_idx, original_file_name, format(round(file_size/1024), 0) as file_size
+          from t_file
+         where board_idx = #{boardIdx} and deleted_yn = 'N'
+    </select>
+    
+    <select id="selectBoardFileInfo" parameterType="map" resultType="board.dto.BoardFileDto">
+        select original_file_name, stored_file_path, file_size
+          from t_file
+         where idx = #{idx} and board_idx = #{boardIdx} and deleted_yn = 'N'
+    </select>
 </mapper>
