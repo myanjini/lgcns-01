@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공통 에러 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; color: #333;
+        }
+
+        h1 {
+            background-color: #f44336; color: white; padding: 20px; text-align: center;
+        }
+
+        .error-details {
+            margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: white;
+            max-width: 800px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-details p {
+            margin: 10px 0;
+        }
+
+        .toggle-button {
+            display: inline-block; margin-top: 10px; padding: 10px 20px; font-size: 14px; color: white;
+            background-color: #007bff; border: none; border-radius: 5px; cursor: pointer;
+        }
+
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        ul li {
+            font-family: monospace; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>공통 에러 페이지</h1>
+    <div class="error-details">
+        <p><strong>요청 URL:</strong> <span th:text="${request.getRequestURI()}"></span></p>
+        <p><strong>오류 메시지:</strong> <span th:text="${message}"></span></p>
+
+        <h2>오류 상세 내용</h2>
+        <button class="toggle-button" onclick="toggleDetails()">보기</button>
+        <ul id="error-details-list" class="hidden">
+            <li th:each="line : ${stackTrace}" th:text="${line.toString()}"></li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleDetails() {
+            const detailsList = document.getElementById("error-details-list");
+            const button = document.querySelector(".toggle-button");
+            if (detailsList.classList.contains("hidden")) {
+                detailsList.classList.remove("hidden");
+                button.textContent = "숨기기";
+            } else {
+                detailsList.classList.add("hidden");
+                button.textContent = "보기";
+            }
+        }
+    </script>
+</body>
+</html>
