@@ -41,6 +41,13 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.springframework/spring-aspects
     implementation 'org.springframework:spring-aspects:6.2.2'
+    
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.4'
+    
+    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.2'
+    
 }
 
 tasks.named('test') {

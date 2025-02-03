@@ -59,9 +59,10 @@ public class BoardServiceImpl implements BoardService {
         // int i = 10 / 0;
         
         BoardDto boardDto = boardMapper.selectBoardDetail(boardIdx);
-        List<BoardFileDto> boardFileInfoList = boardMapper.selectBoardFileList(boardIdx);
-        boardDto.setFileInfoList(boardFileInfoList);
-        
+        if (boardDto != null) {
+            List<BoardFileDto> boardFileInfoList = boardMapper.selectBoardFileList(boardIdx);
+            boardDto.setFileInfoList(boardFileInfoList);
+        }
         return boardDto;
     }
 

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import board.dto.BoardDto;
 import board.dto.BoardFileDto;
+import board.dto.BoardInsertRequest;
 import board.service.BoardService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +51,16 @@ public class RestController {
     
     // 저장 처리
     @PostMapping("/board/write")
-    public String insertBoard(BoardDto boardDto, MultipartHttpServletRequest request) throws Exception {
+    // public String insertBoard(BoardDto boardDto, MultipartHttpServletRequest request) throws Exception {
+    public String insertBoard(BoardInsertRequest boardInsertRequest, MultipartHttpServletRequest request) throws Exception {
+        // 서비스 메서드에 맞춰서 데이터를 변경
+        /*
+        BoardDto boardDto = new BoardDto();
+        boardDto.setTitle(boardInsertRequest.getTitle());
+        boardDto.setContents(boardInsertRequest.getContents());
+        */
+        BoardDto boardDto = new ModelMapper().map(boardInsertRequest, BoardDto.class);
+        
         boardService.insertBoard(boardDto, request);
         return "redirect:/board";
     }

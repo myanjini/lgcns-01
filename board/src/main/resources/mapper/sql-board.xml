@@ -18,8 +18,8 @@
      -->
     <insert id="insertBoard" parameterType="board.dto.BoardDto" 
         useGeneratedKeys="true" keyProperty="boardIdx">
-        insert into t_board(title, contents, created_dt, created_id)
-        values (#{title}, #{contents}, now(), #{createdId})
+        insert into t_board(title, contents, created_dt, created_id, hit_cnt)
+        values (#{title}, #{contents}, now(), #{createdId}, #{hitCnt})
     </insert>
     
     <select id="selectBoardDetail" parameterType="int" resultType="board.dto.BoardDto">

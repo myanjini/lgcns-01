@@ -4,10 +4,16 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import board.dto.BoardDto;
 import board.dto.BoardFileDto;
+import board.dto.BoardListResponse;
 import board.service.BoardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
@@ -35,9 +44,24 @@ public class RestApiBoardController {
     private BoardService boardService;
     
     // 목록 조회
+    @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping("/board")
-    public List<BoardDto> openBoardList() throws Exception {
-        return boardService.selectBoardList();
+    public List<BoardListResponse> openBoardList() throws Exception {
+        List<BoardDto> boardList = boardService.selectBoardList();
+        
+        List<BoardListResponse> results = new ArrayList<>();
+        /*
+        for (BoardDto dto : boardList) {
+            BoardListResponse res = new BoardListResponse();
+            res.setBoardIdx(dto.getBoardIdx());
+            res.setTitle(dto.getTitle());
+            res.setHitCnt(dto.getHitCnt());
+            res.setCreatedDt(dto.getCreatedDt());
+            results.add(res);
+        }
+        */
+        boardList.forEach(dto -> results.add(new ModelMapper().map(dto, BoardListResponse.class)));
+        return results;
     }
     
     // 저장 처리
@@ -49,9 +73,20 @@ public class RestApiBoardController {
     }
     
     // 상세 조회
+    @Operation(summary = "게시판 상세 조회", description = "게시물 아이디와 일치하는 게시물의 상세 정보를 조회해서 반환합니다.")
+    @Parameter(name = "boardIdx", description = "게시물 아이디", required = true)
     @GetMapping("/board/{boardIdx}")
-    public BoardDto openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception {
-        return boardService.selectBoardDetail(boardIdx);        
+    public ResponseEntity<Object> openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception {
+        BoardDto boardDto = boardService.selectBoardDetail(boardIdx);
+        if (boardDto == null) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", HttpStatus.NOT_FOUND.value());
+            result.put("name", HttpStatus.NOT_FOUND.name());
+            result.put("message", "게시판 번호 " + boardIdx + "와 일치하는 게시물이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(boardDto);
+        }
     }
     
     // 수정 처리
