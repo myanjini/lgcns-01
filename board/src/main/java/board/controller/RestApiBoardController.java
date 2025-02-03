@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +39,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api")
+// @CrossOrigin(origins = "http://localhost:5173")
 public class RestApiBoardController {
     
     @Autowired
     private BoardService boardService;
     
     // 목록 조회
+//    @CrossOrigin(origins = "http://localhost:5173")
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping("/board")
     public List<BoardListResponse> openBoardList() throws Exception {
