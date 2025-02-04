@@ -47,8 +47,8 @@ export default function BoardDetail() {
     const fileDownload = (e, file) => {
         e.preventDefault();
 
-        const {boardIdx, idx, originalFileName} = file;
-
+        const {idx, originalFileName} = file;
+        
         axios({
             url: `http://localhost:8080/api/v2/board/file?boardIdx=${boardIdx}&idx=${idx}`,
             method: 'GET',
