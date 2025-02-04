@@ -65,7 +65,7 @@ public class JpaBoardServiceImpl implements JpaBoardService {
 
     @Override
     public BoardFileEntity selectBoardFileInfo(int idx, int boardIdx) {
-        return jpaBoardRepository.findBoardFile(boardIdx, boardIdx);
+        return jpaBoardRepository.findBoardFile(boardIdx, idx);
     }
 
     @Override

@@ -25,9 +25,7 @@ import board.entity.BoardEntity;
 import board.entity.BoardFileEntity;
 import board.service.JpaBoardService;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/jpa")
 public class JpaBoardController {
@@ -64,9 +62,6 @@ public class JpaBoardController {
     @GetMapping("/board/{boardIdx}")
     public ModelAndView openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception {
         BoardEntity boardEntity = boardService.selectBoardDetail(boardIdx);
-        
-        boardEntity.getFileInfoList().forEach(f -> log.info(f.getOriginalFileName()));
-        
         ModelAndView mv = new ModelAndView("/board/jpaBoardDetail");
         mv.addObject("board", boardEntity);
         return mv;
