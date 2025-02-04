@@ -7,7 +7,7 @@ export default function BoardList() {
 
     useEffect(() => {
         axios
-        .get("http://localhost:8080/api/board")
+        .get("http://localhost:8080/api/v2/board")
         .then(res => {
             console.log(res);
             res && res.data && setDatas(res.data);
