@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,10 +68,20 @@ public class RestApiBoardController {
     
     // 저장 처리
     @PostMapping(value = "/board", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void insertBoard(@RequestParam("board") String boardData, MultipartHttpServletRequest request) throws Exception {
+    public ResponseEntity<Object> insertBoard(@RequestParam("board") String boardData, MultipartHttpServletRequest request) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         BoardDto boardDto = objectMapper.readValue(boardData, BoardDto.class);
-        boardService.insertBoard(boardDto, request);
+        Map<String, String> result = new HashMap<>();
+        try {
+            boardService.insertBoard(boardDto, request);
+            result.put("message", "게시판 저장 성공");
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        } catch(Exception e) {
+            result.put("message", "게시판 저장 실패");
+            result.put("description", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);            
+        }
+        
     }
     
     // 상세 조회
@@ -89,6 +98,7 @@ public class RestApiBoardController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(boardDto);
+            // return ResponseEntity.ok(boardDto);
         }
     }
     
