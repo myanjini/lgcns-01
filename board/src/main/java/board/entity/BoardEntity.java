@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -23,7 +24,7 @@ import lombok.Data;
 @Entity
 @Table(name = "t_jpa_board")
 @Data
-// @DynamicUpdate  // 변경된 필드만 업데이트
+@DynamicUpdate
 public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

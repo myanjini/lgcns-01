@@ -1,6 +1,3 @@
-/**
- * 
- */
 package board.service;
 
 import org.modelmapper.ModelMapper;

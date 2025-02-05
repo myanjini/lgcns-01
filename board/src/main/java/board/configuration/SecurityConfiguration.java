@@ -27,11 +27,9 @@ public class SecurityConfiguration {
             .loginPage("/login")
             .loginProcessingUrl("/loginProc")
             .permitAll()
-            // .defaultSuccessUrl("/board")
             .successHandler(successHandler)
         );
         
-        // 개발단계에서 임시적으로 Disable 
         http.csrf(auth -> auth.disable());
         
         return http.build();

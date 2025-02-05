@@ -1,5 +1,7 @@
 package board.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -16,13 +18,11 @@ import lombok.Data;
 @Entity
 @Table(name = "t_jpa_file")
 @Data
-// @DynamicUpdate
+@DynamicUpdate
 public class BoardFileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
-    
-    // private int boardIdx;
     
     @Column(nullable = false)
     private String originalFileName;

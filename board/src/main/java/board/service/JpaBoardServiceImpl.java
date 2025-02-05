@@ -42,23 +42,6 @@ public class JpaBoardServiceImpl implements JpaBoardService {
         }
     }
 
-    /*
-    @Override
-    public void saveBoard(BoardEntity boardEntity, MultipartHttpServletRequest request) throws Exception {
-        boardEntity.setCreatedId("admin");
-        BoardEntity existingBoard = jpaBoardRepository.findById(boardEntity.getBoardIdx()).orElse(null);
-        if (existingBoard != null) {
-            // boardEntity.setFileInfoList(existingBoard.getFileInfoList());
-        } else {
-            List<BoardFileEntity> list = fileUtils.parseFileInfo2(boardEntity.getBoardIdx(), request);
-            if (!CollectionUtils.isEmpty(list)) {
-                boardEntity.setFileInfoList(list);
-            }
-        }
-        jpaBoardRepository.save(boardEntity);
-    }
-    */
-
     @Override
     public void deleteBoard(int boardIdx) {
         jpaBoardRepository.deleteById(boardIdx);
@@ -71,12 +54,10 @@ public class JpaBoardServiceImpl implements JpaBoardService {
 
     @Override
     public void insertBoard(BoardEntity boardEntity, MultipartHttpServletRequest request) throws Exception {
-        // boardEntity.setCreatedId("admin");
-        
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         boardEntity.setCreatedId(username);
         
-        List<BoardFileEntity> list = fileUtils.parseFileInfo2(boardEntity.getBoardIdx(), request);
+        List<BoardFileEntity> list = fileUtils.parseFileInfo(boardEntity.getBoardIdx(), request);
         if (!CollectionUtils.isEmpty(list)) {
             boardEntity.setFileInfoList(list);
         }

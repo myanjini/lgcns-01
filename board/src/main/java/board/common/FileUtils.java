@@ -20,14 +20,13 @@ public class FileUtils {
     @Value("${spring.servlet.multipart.location}")
     private String uploadDir;
     
-    public List<BoardFileEntity> parseFileInfo2(int boardIdx, MultipartHttpServletRequest request) throws Exception {
+    public List<BoardFileEntity> parseFileInfo(int boardIdx, MultipartHttpServletRequest request) throws Exception {
         if (ObjectUtils.isEmpty(request)) {
             return null;
         }
         
         List<BoardFileEntity> fileInfoList = new ArrayList<>();
         
-        // 파일을 저장할 디렉터리를 설정
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
         ZonedDateTime now = ZonedDateTime.now();
         String storedDir = uploadDir + "images\\" + now.format(dtf);
@@ -36,7 +35,6 @@ public class FileUtils {
             fileDir.mkdirs();
         }
         
-        // 업로드 파일 데이터를 디렉터리에 저장하고 정보를 리스트에 저장 
         Iterator<String> fileTagNames = request.getFileNames();
         while(fileTagNames.hasNext()) {
             String fileTagName = fileTagNames.next();
@@ -44,7 +42,6 @@ public class FileUtils {
             for (MultipartFile file : files) {
                 String originalFileExtension = "";
                 
-                // 파일 확장자를 ContentType에 맞춰서 지정
                 if (!file.isEmpty()) {
                     String contentType = file.getContentType();
                     if (ObjectUtils.isEmpty(contentType)) {
@@ -61,21 +58,15 @@ public class FileUtils {
                         }
                     }
                     
-                    // 저장에 사용할 파일 이름을 조합
                     String storedFileName = Long.toString(System.nanoTime()) + originalFileExtension;
                     String storedFilePath = storedDir + "\\" + storedFileName;
                     
-                    // 파일 정보를 리스트에 저장 
                     BoardFileEntity entity = new BoardFileEntity();
-                    /*
-                    entity.setBoardIdx(boardIdx);
-                    */
                     entity.setFileSize(file.getSize());
                     entity.setOriginalFileName(file.getOriginalFilename());
                     entity.setStoredFilePath(storedFilePath);
                     fileInfoList.add(entity);
                     
-                    // 파일 저장
                     fileDir = new File(storedFilePath);
                     file.transferTo(fileDir);                    
                 }

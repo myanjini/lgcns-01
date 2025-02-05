@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-// SpringBoot에서는 @EnableAspectJAutoProxy 어노테이션을 추가하지 않아도 자동으로 AOP 설정을 활성화
 @Aspect
 @Slf4j
 @Component      
