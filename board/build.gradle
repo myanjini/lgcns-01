@@ -48,6 +48,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.2'
     
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    
 }
 
 tasks.named('test') {

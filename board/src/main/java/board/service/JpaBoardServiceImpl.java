@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -70,7 +71,11 @@ public class JpaBoardServiceImpl implements JpaBoardService {
 
     @Override
     public void insertBoard(BoardEntity boardEntity, MultipartHttpServletRequest request) throws Exception {
-        boardEntity.setCreatedId("admin");
+        // boardEntity.setCreatedId("admin");
+        
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        boardEntity.setCreatedId(username);
+        
         List<BoardFileEntity> list = fileUtils.parseFileInfo2(boardEntity.getBoardIdx(), request);
         if (!CollectionUtils.isEmpty(list)) {
             boardEntity.setFileInfoList(list);
