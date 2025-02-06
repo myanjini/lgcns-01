@@ -49,6 +49,15 @@ dependencies {
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.2'
     
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+ 
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.6'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.6'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.6'
+    
+    
     
 }
 
