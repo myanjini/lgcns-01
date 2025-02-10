@@ -37,11 +37,17 @@ export default function BoardWrite() {
 
     const handlerSubmit = e => {
         e.preventDefault();
+
+        const token = sessionStorage.getItem("token");
+
         axios({
             method: "POST", 
             url: "http://localhost:8080/api/v2/board", 
             data: formData, 
-            headers: {"Content-Type": "multipart/form-data"}
+            headers: {
+                "Content-Type": "multipart/form-data", 
+                "Authorization": `Bearer ${token}`
+            }
         })
         .then(res => res && res.status === 201 && navigate("/list"))
         .catch(err => console.log(err));

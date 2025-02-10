@@ -11,14 +11,22 @@ export default function BoardDetail() {
     const {boardIdx} = useParams();
     
     useEffect(() => {
+        const token = sessionStorage.getItem("token");
+
         axios 
-            .get(`http://localhost:8080/api/v2/board/${boardIdx}`)
+            .get(`http://localhost:8080/api/v2/board/${boardIdx}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => {
                 res && res.data && setBoard(res.data);
                 res && res.data && setTitle(res.data.title);
                 res && res.data && setContents(res.data.contents);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                if (err.status === 401 || err.status === 403) {
+                    alert("인증 토큰 누락 또는 오류");
+                    navigate("/");
+                }
+            });
     }, []);
 
     const navigate = useNavigate();
@@ -30,16 +38,23 @@ export default function BoardDetail() {
 
     const updateButtonClick = e => {
         e.preventDefault();
+        const token = sessionStorage.getItem("token");
         axios
-            .put(`http://localhost:8080/api/v2/board/${boardIdx}`, {title, contents})
+            .put(
+                `http://localhost:8080/api/v2/board/${boardIdx}`
+                , {title, contents}
+                , {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => res && res.status === 200 && navigate("/list"))
             .catch(err => console.log(err));
     };
 
     const deleteButtonClick = e => {
         e.preventDefault();
+        const token = sessionStorage.getItem("token");
         axios
-            .delete(`http://localhost:8080/api/v2/board/${boardIdx}`)
+            .delete(
+                `http://localhost:8080/api/v2/board/${boardIdx}`
+                , {headers: {"Authorization": `Bearer ${token}`}})
             .then(res => res && res.status === 200 && navigate("/list"))
             .catch(err => console.log(err));
     };
@@ -48,11 +63,12 @@ export default function BoardDetail() {
         e.preventDefault();
 
         const {idx, originalFileName} = file;
-        
+        const token = sessionStorage.getItem("token");
         axios({
             url: `http://localhost:8080/api/v2/board/file?boardIdx=${boardIdx}&idx=${idx}`,
             method: 'GET',
-            responseType: 'blob'        
+            responseType: 'blob', 
+            headers: {"Authorization": `Bearer ${token}`}
         })
         .then(res => {
             const href = URL.createObjectURL(res.data);

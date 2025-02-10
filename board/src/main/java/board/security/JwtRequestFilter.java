@@ -5,12 +5,17 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import board.common.JwtUtils;
 import board.entity.UserEntity;
 import board.repository.UserRepository;
+import board.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +30,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     
     @Autowired
     private UserRepository repository;
+    
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
     
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -58,6 +66,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
         
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(subject);
+        
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken 
+            = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        usernamePasswordAuthenticationToken.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                
+        
         filterChain.doFilter(request, response);
     }
     
@@ -65,7 +82,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         log.debug("shouldNotFilter >>>>>>>>>>");
         
-        String[] excludePath = { "/login", "/loginProc", "/join", "/joinProc" };
+        String[] excludePath = { "/loginProc", "/joinProc" };
        
         
         String uri = request.getRequestURI();

@@ -1,10 +1,13 @@
 package board.common;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import board.entity.UserEntity;
@@ -42,6 +45,23 @@ public class JwtUtils {
         return jwtToken;
     }
     
+    public String generateToken(UserDetails userDetails) {
+        Date now = new Date();
+        
+        String jwtToken = Jwts.builder()
+                .claim("name", userDetails.getUsername())
+                .claim("role", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .subject(userDetails.getUsername())
+                .id(String.valueOf(userDetails.hashCode()))
+                .issuedAt(now)
+                .expiration(new Date(now.getTime() + this.expirationTime))
+                .signWith(this.hmacKey, Jwts.SIG.HS256)
+                .compact();
+        log.debug(jwtToken);
+        
+        return jwtToken;
+    }
+
     private Claims getAllClaimsFromToken(String token) {
         Jws<Claims> jwt = Jwts.parser()
             .verifyWith(this.hmacKey)

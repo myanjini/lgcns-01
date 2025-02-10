@@ -20,5 +20,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
             .addMapping("/api/**")
             .allowedOrigins("http://localhost:5173")
             .allowedMethods("GET", "POST", "PUT", "DELETE");
+        registry
+            .addMapping("/loginProc")
+            .allowedOrigins("http://localhost:5173")
+            .allowedMethods("POST");
     }
 }
