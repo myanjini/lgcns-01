@@ -15,7 +15,9 @@ import board.common.JwtUtils;
 import board.dto.CustomUserDetails;
 import board.dto.LoginRequest;
 import board.service.CustomUserDetailsService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 public class LoginController {
     @Autowired
@@ -31,6 +33,8 @@ public class LoginController {
     @PostMapping("/loginProc")
     @ResponseStatus(HttpStatus.OK)
     public String loginProc(@RequestBody LoginRequest loginRequest) {
+        log.error("Loggin test");
+        
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
