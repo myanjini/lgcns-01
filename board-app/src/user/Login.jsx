@@ -8,12 +8,16 @@ export default function Login() {
 
     const navigate = useNavigate();
 
+    const rest_api_host = import.meta.env.VITE_REST_API_HOST;
+    const rest_api_port = import.meta.env.VITE_REST_API_PORT;
+    console.log({rest_api_host, rest_api_port});
+
     const handleSubmit = e => {
         e.preventDefault();
         
         axios({
             method: "post", 
-            url: "http://localhost:8080/loginProc", 
+            url: `http://${rest_api_host}:${rest_api_port}/loginProc`, 
             data: { username, password }, 
             headers: { "Content-Type": "application/json" }
         })

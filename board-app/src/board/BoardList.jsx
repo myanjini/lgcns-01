@@ -2,16 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
+
 export default function BoardList() {
     const [datas, setDatas] = useState([]);
 
     const navigate = useNavigate();
 
+    const rest_api_host = import.meta.env.VITE_REST_API_HOST;
+    const rest_api_port = import.meta.env.VITE_REST_API_PORT;
+    console.log({rest_api_host, rest_api_port});
+
     useEffect(() => {
         const token = sessionStorage.getItem("token");
 
         axios
-        .get("http://localhost:8080/api/v2/board", {headers: {"Authorization": `Bearer ${token}`}})
+        .get(`http://${rest_api_host}:${rest_api_port}/api/v2/board`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(res => {
             console.log(res);
             res && res.data && setDatas(res.data);

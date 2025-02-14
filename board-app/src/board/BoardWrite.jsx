@@ -10,6 +10,10 @@ export default function BoardWrite() {
     const changeTitle = e => setTitle(e.target.value);
     const changeContents = e => setContents(e.target.value);
 
+    const rest_api_host = import.meta.env.VITE_REST_API_HOST;
+    const rest_api_port = import.meta.env.VITE_REST_API_PORT;
+    console.log({rest_api_host, rest_api_port});
+
     const refFiles = useRef();
 
     const [files, setFiles] = useState([]);
@@ -42,7 +46,7 @@ export default function BoardWrite() {
 
         axios({
             method: "POST", 
-            url: "http://localhost:8080/api/v2/board", 
+            url: `http://${rest_api_host}:${rest_api_port}/api/v2/board`, 
             data: formData, 
             headers: {
                 "Content-Type": "multipart/form-data", 
