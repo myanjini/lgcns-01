@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active:
+    - git
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: 
+          - classpath:/config
+#         - file:///c:\temp\config
+        git:
+          uri: https://github.com/myanjini/license-service.git
+          default-label: main
+          search-paths: config
+server:
+  port: 8071          

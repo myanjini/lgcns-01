@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: licensing-service
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://localhost:8071"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude:
+        - beans
+      base-path: /
+  endpoint:
+    health:
+      show-details: always
