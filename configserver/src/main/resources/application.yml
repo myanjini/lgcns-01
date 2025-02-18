@@ -13,7 +13,8 @@ spring:
 #         - file:///c:\temp\config
         git:
           uri: https://github.com/myanjini/license-service.git
-          default-label: main
           search-paths: config
 server:
-  port: 8071          
+  port: 8071
+encrypt:
+  key: fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo
