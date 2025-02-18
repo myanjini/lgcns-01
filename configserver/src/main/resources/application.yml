@@ -3,17 +3,24 @@ spring:
     name: config-server
   profiles:
     active:
-    - git
+#   - git
+    - native
   cloud:
     config:
       server:
         native:
           search-locations: 
-          - classpath:/config
+          - classpath:/cofing/board          # github의 /board 내용
+          - classpath:/config/license        # github의 /config 내용    
+          - classpath:/config/organization   # 새롭게 추가
+          - classpath:/config/discovery      # github의 /discovery 내용
 #         - file:///c:\temp\config
         git:
           uri: https://github.com/myanjini/license-service.git
-          search-paths: config
+          search-paths:
+          - board
+          - config
+          - discovery
 server:
   port: 8071
 encrypt:

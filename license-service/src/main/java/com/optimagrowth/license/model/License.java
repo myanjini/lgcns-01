@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -34,6 +35,18 @@ public class License extends RepresentationModel<License> {
     
     @Column(name = "comment")
     private String comment;
+    
+    @Transient
+    private String organizationName;
+    
+    @Transient
+    private String contactName;
+    
+    @Transient
+    private String contactEmail;
+    
+    @Transient
+    private String contactPhone;    
     
     public License withComment(String comment) {
         this.setComment(comment);

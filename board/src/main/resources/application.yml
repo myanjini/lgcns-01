@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: board
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://localhost:8071"
+logging:
+  level:
+    root: info
+    board: debug
