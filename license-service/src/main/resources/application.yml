@@ -16,3 +16,20 @@ management:
   endpoint:
     health:
       show-details: always
+
+logging:
+  level:
+    root: off
+    '[com.optimagrowth.license.service]': info	
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 10
+      licenseService:
+        base-config: default
+        minimum-number-of-calls: 10
+        wait-duration-in-open-state: 5000

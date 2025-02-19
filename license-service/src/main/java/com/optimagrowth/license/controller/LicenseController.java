@@ -1,9 +1,11 @@
 package com.optimagrowth.license.controller;
 
-import java.util.Locale;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,21 @@ public class LicenseController {
     @Autowired
     private LicenseService licenseService;
 
+    @GetMapping(value="/")
+    public List<License> getLicense(@PathVariable("organizationId") String organizationId) throws TimeoutException {
+    	return licenseService.getLicenseByOrganization(organizationId);
+    }    
+    
+    @GetMapping(value = "/{licenseId}/{clientType}")
+    public License getLicenseWithClient(
+    		@PathVariable("organizationId") String organizationId,
+            @PathVariable("licenseId") String licenseId, 
+            @PathVariable("clientType") String clientType) {
+    	License license = licenseService.getLicense(licenseId, organizationId, clientType);
+    	return license;
+    }
+        
+    
     @GetMapping(value = "/{licenseId}")
     public ResponseEntity<License> getLicense(
             @PathVariable("organizationId") String organizationId,
