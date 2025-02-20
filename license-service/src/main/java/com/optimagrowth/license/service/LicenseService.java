@@ -59,14 +59,14 @@ public class LicenseService {
     	
     	// randomlyRunLong();
     	
-    	count ++;
-    	log.info(">>> getLicenseByOrganization() is called ... " + count);
-    	try {
-    		Thread.sleep(3000);
-    		throw new java.util.concurrent.TimeoutException();
-    	} catch (InterruptedException e) {}
-    	
-    	log.info(">>> findByOrganizationId() call ... " + count);   		// 호출되지 않음 	
+//    	count ++;
+//    	log.info(">>> getLicenseByOrganization() is called ... " + count);
+//    	try {
+//    		Thread.sleep(3000);
+//    		throw new java.util.concurrent.TimeoutException();
+//    	} catch (InterruptedException e) {}
+//    	
+//    	log.info(">>> findByOrganizationId() call ... " + count);   		// 호출되지 않음 	
     	return licenseRepository.findByOrganizationId(organizationId);
     }
 

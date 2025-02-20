@@ -17,10 +17,10 @@ management:
     health:
       show-details: always
 
-logging:
-  level:
-    root: off
-    '[com.optimagrowth.license.service]': info	
+#logging:
+#  level:
+#    root: off
+#    '[com.optimagrowth.license.service]': info	
 resilience4j:
   circuitbreaker:
     configs:

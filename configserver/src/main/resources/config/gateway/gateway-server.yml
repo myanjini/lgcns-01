@@ -1,0 +1,27 @@
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+spring:
+  cloud:
+    gateway:
+      discovery.locator:
+        enabled: true
+        lowerCaseServiceId: true
+      routes:
+        - id: licensing-service
+          predicates: 
+            - Path=/licensingService/**
+          uri: lb://LICENSING-SERVICE
+          filters:
+            - RewritePath=/licensingService/(?<segment>.*), /${segment}
+        - id: organization-service
+          predicates:
+            - Path=/organizationService/**
+          uri: lb://ORGANIZATION-SERVICE
+          filters:
+            - RewritePath=/organizationService/(?<segment>.*), /${segment}
